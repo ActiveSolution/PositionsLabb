@@ -8,16 +8,10 @@ namespace PositionsLabb.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext()
-            : this(new DbContextOptionsBuilder<DataContext>()
+        public DataContext(DbContextOptions<DataContext> options = null)
+            : base(options ?? new DbContextOptionsBuilder<DataContext>()
                 .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=PositionsLabb;Trusted_Connection=True;")
                 .Options)
-        {
-            
-        }
-
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options)
         { }
         public DbSet<City> Cities { get; set; }
         public DbSet<Position> Positions { get; set; }

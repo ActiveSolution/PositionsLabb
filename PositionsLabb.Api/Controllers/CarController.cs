@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PositionsLabb.Data;
@@ -16,25 +17,23 @@ namespace PositionsLabb.Api.Controllers
         }
 
         [HttpPost("{id}/positions")]
-        public async Task Post(int id, PositionData data)
-        {           
-            using (var context = new DataContext())
+        public async Task Post(int id, PositionData[] data)
+        {
+            foreach (PositionData positionData in data)
             {
-                Vehicle vehicle = await context.Vehicles.FirstOrDefaultAsync(v => v.Id == id);
-                if (vehicle == null)
+                using (var context = new DataContext())
                 {
-                    vehicle = new Vehicle();
-                    await context.Vehicles.AddAsync(vehicle);
+                    await context.Positions.AddAsync(new Position
+                    {
+                        Latitude = positionData.Latitude,
+                        Longitude = positionData.Longitude,
+                        Vehicle = await context.Vehicles.FirstOrDefaultAsync(v => v.Id == id)
+                    });
+                    await context.SaveChangesAsync();
                 }
-                await context.Positions.AddAsync(new Position
-                {
-                    Latitude = data.Latitude,
-                    Longitude = data.Longitude,
-                    Vehicle = vehicle
-                });
-                await context.SaveChangesAsync();
             }
         }
+
     }
 
     public class PositionData
