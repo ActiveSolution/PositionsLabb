@@ -7,6 +7,9 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180920115445_AddPositionColumns.cs" />
     <Compile Remove="Migrations\20180920121756_AddPositionColumns.cs" />
+    <Compile Remove="Migrations\20180920130146_AddTableColumns.cs" />
+    <Compile Remove="Migrations\20180924084350_AddTableColumns.cs" />
+    <Compile Remove="Migrations\20180924084638_AddTableColumns.cs" />
   </ItemGroup>
 
   <ItemGroup>

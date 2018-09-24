@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace PositionsLabb.Data
 {
@@ -13,22 +11,9 @@ namespace PositionsLabb.Data
                 .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=PositionsLabb;Trusted_Connection=True;")
                 .Options)
         { }
-        public DbSet<City> Cities { get; set; }
+
         public DbSet<Position> Positions { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Vehicle>().HasData(
-                new Vehicle{ Id = 1 },
-                new Vehicle{ Id = 2 },
-                new Vehicle{ Id = 3 },
-                new Vehicle{ Id = 4 },
-                new Vehicle{ Id = 5 },
-                new Vehicle{ Id = 6 },
-                new Vehicle{ Id = 7 }
-            );
-        }
     }
 
     public abstract class Identity
@@ -36,20 +21,18 @@ namespace PositionsLabb.Data
         public int Id { get; set; }
     }
 
-    public class City : Identity
-    {
-        public string Name { get; set; }
-    }
-
     public class Position : Identity
     {
+        [ForeignKey("VehicleId")]
+        public Vehicle Vehicle { get; set; } 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public Vehicle Vehicle { get; set; } 
+        public DateTime DateTimeUtc { get; set; }
     }
 
     public class Vehicle : Identity
     {
+        public Guid VehicleId { get; set; }
         public int Mileage { get; set; }
     }
 }

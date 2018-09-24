@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PositionsLabb.Data.Migrations
 {
@@ -11,6 +12,12 @@ namespace PositionsLabb.Data.Migrations
                 table: "Vehicles",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "VehicleId",
+                table: "Vehicles",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<double>(
                 name: "Latitude",
@@ -28,25 +35,6 @@ namespace PositionsLabb.Data.Migrations
                 name: "VehicleId",
                 table: "Positions",
                 nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Cities",
-                nullable: true);
-
-            migrationBuilder.InsertData(
-                table: "Vehicles",
-                columns: new[] { "Id", "Mileage" },
-                values: new object[,]
-                {
-                    { 1, 0 },
-                    { 2, 0 },
-                    { 3, 0 },
-                    { 4, 0 },
-                    { 5, 0 },
-                    { 6, 0 },
-                    { 7, 0 }
-                });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Positions_Vehicles_VehicleId",
@@ -63,47 +51,12 @@ namespace PositionsLabb.Data.Migrations
                 name: "FK_Positions_Vehicles_VehicleId",
                 table: "Positions");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Positions_VehicleId",
-                table: "Positions");
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "Vehicles",
-                keyColumn: "Id",
-                keyValue: 7);
-
             migrationBuilder.DropColumn(
                 name: "Mileage",
+                table: "Vehicles");
+
+            migrationBuilder.DropColumn(
+                name: "VehicleId",
                 table: "Vehicles");
 
             migrationBuilder.DropColumn(
@@ -117,10 +70,6 @@ namespace PositionsLabb.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "VehicleId",
                 table: "Positions");
-
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Cities");
         }
     }
 }

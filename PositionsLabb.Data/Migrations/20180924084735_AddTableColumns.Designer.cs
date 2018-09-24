@@ -10,7 +10,7 @@ using PositionsLabb.Data;
 namespace PositionsLabb.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20180920130146_AddTableColumns")]
+    [Migration("20180924084735_AddTableColumns")]
     partial class AddTableColumns
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,19 +20,6 @@ namespace PositionsLabb.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("PositionsLabb.Data.City", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cities");
-                });
 
             modelBuilder.Entity("PositionsLabb.Data.Position", b =>
                 {
@@ -61,19 +48,11 @@ namespace PositionsLabb.Data.Migrations
 
                     b.Property<int>("Mileage");
 
+                    b.Property<Guid>("VehicleId");
+
                     b.HasKey("Id");
 
                     b.ToTable("Vehicles");
-
-                    b.HasData(
-                        new { Id = 1, Mileage = 0 },
-                        new { Id = 2, Mileage = 0 },
-                        new { Id = 3, Mileage = 0 },
-                        new { Id = 4, Mileage = 0 },
-                        new { Id = 5, Mileage = 0 },
-                        new { Id = 6, Mileage = 0 },
-                        new { Id = 7, Mileage = 0 }
-                    );
                 });
 
             modelBuilder.Entity("PositionsLabb.Data.Position", b =>
