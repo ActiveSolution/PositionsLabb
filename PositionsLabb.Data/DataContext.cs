@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PositionsLabb.Data
 {
@@ -19,20 +17,5 @@ namespace PositionsLabb.Data
     public abstract class Identity
     {
         public int Id { get; set; }
-    }
-
-    public class Position : Identity
-    {
-        [ForeignKey("VehicleId")]
-        public Vehicle Vehicle { get; set; } 
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public DateTime DateTimeUtc { get; set; }
-    }
-
-    public class Vehicle : Identity
-    {
-        public Guid VehicleId { get; set; }
-        public int Mileage { get; set; }
     }
 }

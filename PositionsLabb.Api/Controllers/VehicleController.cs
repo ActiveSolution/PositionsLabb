@@ -7,11 +7,11 @@ using PositionsLabb.Data;
 
 namespace PositionsLabb.Api.Controllers
 {
-    [Route("api/vehicle")]
+    [Route("api/vehicles")]
     [ApiController]
     public class VehicleController : ControllerBase
     {
-        [HttpGet("{id}/positions/{date}")]
+        [HttpGet("{vehicleId}/positions/{date}")]
         public Position[] Get(Guid vehicleId, DateTime date)
         {
             using (var context = new DataContext())
@@ -21,7 +21,7 @@ namespace PositionsLabb.Api.Controllers
                     .OrderBy(p => p.DateTimeUtc)
                     .ToArray()
                     .Where(p => p.Vehicle.VehicleId == vehicleId)
-                    .Where(p => p.DateTimeUtc == date)
+                    .Where(p => p.DateTimeUtc.Date == date.Date)
                     .ToArray();
 
                 return vehicleData;
@@ -33,20 +33,24 @@ namespace PositionsLabb.Api.Controllers
         {
             foreach (PositionData positionData in data)
             {
-                using (var context = new DataContext())
-                {
-                    await context.Positions.AddAsync(new Position
-                    {
-                        Latitude = positionData.Latitude,
-                        Longitude = positionData.Longitude,
-                        Vehicle = await context.Vehicles.FirstOrDefaultAsync(v => v.VehicleId == positionData.VehicleId),
-                        DateTimeUtc = DateTime.UtcNow
-                    });
-                    await context.SaveChangesAsync();
-                }
+                await UpdatePosition(positionData);
             }
         }
 
+        private async Task UpdatePosition(PositionData positionData)
+        {
+            using (var context = new DataContext())
+            {
+                await context.Positions.AddAsync(new Position
+                {
+                    Latitude = positionData.Latitude,
+                    Longitude = positionData.Longitude,
+                    Vehicle = await context.Vehicles.FirstOrDefaultAsync(v => v.VehicleId == positionData.VehicleId),
+                    DateTimeUtc = positionData.DateTimeUtc
+                });
+                await context.SaveChangesAsync();
+            }
+        }
     }
 
     public class PositionData
@@ -54,5 +58,6 @@ namespace PositionsLabb.Api.Controllers
         public Guid VehicleId { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
+        public DateTime DateTimeUtc { get; set;}
     }
 }
