@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PositionsLabb.Api.Models;
 using PositionsLabb.Data;
+using PositionsLabb.Data.Entities;
 
 namespace PositionsLabb.Api.Controllers
 {
@@ -51,13 +53,5 @@ namespace PositionsLabb.Api.Controllers
                 await context.SaveChangesAsync();
             }
         }
-    }
-
-    public class PositionData
-    {
-        public Guid VehicleId { get; set; }
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
-        public DateTime DateTimeUtc { get; set;}
     }
 }

@@ -11,13 +11,13 @@ using System.Text;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
+using PositionsLabb.Api.Models;
 
 namespace PositionsLabb.Api.Test
 {
     public class IntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;
-        private readonly TestServer _server;
         private readonly string _vehicleIdsFilePath = Path.Combine(
             Environment.CurrentDirectory, @"..\..\..\..",
             @"PositionsLabb.Api\SeedData\vehicleIds.txt");
@@ -34,20 +34,16 @@ namespace PositionsLabb.Api.Test
             DateTime dateTimeUtc = DateTime.Parse("2018-09-23");
 
             HttpClient httpClient = _factory.CreateClient();
-            Stopwatch stopwatch = Stopwatch.StartNew();
             
             HttpResponseMessage httpResponseMessage = await httpClient.GetAsync($"/api/vehicles/{vehicleId}/positions/{dateTimeUtc}");
             httpResponseMessage.EnsureSuccessStatusCode();
-
-            stopwatch.Stop();
-            TimeSpan time = stopwatch.Elapsed.Duration();
         }
 
         [Fact]
         public async Task Test_POST()
         {
             Random rnd = new Random(Guid.NewGuid().GetHashCode());
-            Guid[] ids = Newtonsoft.Json.JsonConvert.DeserializeObject<Guid[]>(File.ReadAllText(_vehicleIdsFilePath));
+            Guid[] ids = JsonConvert.DeserializeObject<Guid[]>(File.ReadAllText(_vehicleIdsFilePath));
 
             PositionData[] positionData = ids
                 .Take(200)
@@ -62,12 +58,10 @@ namespace PositionsLabb.Api.Test
                 .ToArray();
 
             HttpClient client = _factory.CreateClient();
-            
-            var content = new StringContent(JsonConvert.SerializeObject(positionData), Encoding.UTF8, "application/json");
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            await client.PostAsync($"/api/vehicles/positions", content);
-            stopwatch.Stop();
-            TimeSpan time = stopwatch.Elapsed.Duration();
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(positionData), Encoding.UTF8, "application/json");
+            HttpResponseMessage httpResponseMessage = await client.PostAsync("/api/vehicles/positions", content);
+            httpResponseMessage.EnsureSuccessStatusCode();
         }
     }
 }

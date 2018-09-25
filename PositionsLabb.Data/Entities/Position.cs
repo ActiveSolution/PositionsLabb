@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PositionsLabb.Data
+namespace PositionsLabb.Data.Entities
 {
     public class Position : Identity
     {

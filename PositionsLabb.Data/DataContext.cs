@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PositionsLabb.Data.Entities;
 
 namespace PositionsLabb.Data
 {

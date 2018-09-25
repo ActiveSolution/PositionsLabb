@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PositionsLabb.Data;
+using PositionsLabb.Data.Entities;
 
 namespace PositionsLabb.Api
 {
